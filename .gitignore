@@ -46,3 +46,58 @@ checkpoints/
 # Temp
 /tmp/
 tmp/
+
+# Backup files
+*.bak
+*.bak_*
+*.backup
+*.phase*
+*.old
+
+# Patch / archive packages
+*.zip
+
+# Large or generated data
+archive/
+eval/outputs/
+outputs/
+runs/
+database/
+*.db
+*.sqlite
+*.sqlite3
+
+# Training checkpoints
+saves/
+checkpoints/
+adapter_model.safetensors
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+
+# Accidental shell pasted files
+/=
+/Dropping
+/Gradient
+/Instantaneous
+/KV
+/Loading
+/Model
+/Num
+/Number
+/Process
+/Saving
+/Total
+/Will
+/loading
+/tokenizer
+/chat
+/complaint_policy
+/logistics_policy
+/price_protection
+/quality_issue
+/refund_policy
+/return_exchange
+/shipping_policy
