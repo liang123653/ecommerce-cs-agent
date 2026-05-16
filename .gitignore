@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+
+# Env
+.env
+.venv/
+venv/
+env/
+
+# Logs / outputs
+*.log
+nohup.out
+runs/
+outputs/
+eval/outputs/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+database/*.db
+
+# Model / checkpoints
+saves/
+checkpoints/
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+
+# Cache
+.cache/
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+*.swp
+
+# Temp
+/tmp/
+tmp/
