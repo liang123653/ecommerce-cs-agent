@@ -120,6 +120,7 @@ def chat(req: ChatRequest) -> ChatResponse:
             "metadata_gate": result.get("metadata_gate"),
             "history_summary": result.get("history_summary"),
             "business_summary": result.get("business_summary"),
+            "merchant_fact_shadow": result.get("merchant_fact_shadow"),
         }
         debug_payload = _json_safe(debug_payload)
 
@@ -161,3 +162,25 @@ def debug_history(req: HistoryDebugRequest) -> Dict[str, Any]:
     )
 
     return _json_safe(history)
+
+
+class MerchantFactDebugRequest(BaseModel):
+    query: str
+    product_id: Optional[str] = None
+    sku_id: Optional[str] = None
+
+
+@app.post("/debug/merchant_fact")
+def debug_merchant_fact(req: MerchantFactDebugRequest) -> Dict[str, Any]:
+    """
+    调试 merchant fact shadow，不调用主链路 LLM。
+    """
+    from app.merchant_fact_shadow import run_merchant_fact_shadow
+
+    result = run_merchant_fact_shadow(
+        req.query,
+        product_id=req.product_id,
+        sku_id=req.sku_id,
+        top_k=3,
+    )
+    return _json_safe(result)

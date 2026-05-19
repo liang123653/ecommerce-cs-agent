@@ -201,6 +201,23 @@ def answer_with_strategy_and_memory_write(
 
     result = answer_with_strategy(query, **kwargs)
 
+    # Merchant fact shadow side context:
+    # 只记录旁路 fact 命中情况，不改变主链路 reply / strategy。
+    try:
+        from app.merchant_fact_shadow import run_merchant_fact_shadow
+
+        result["merchant_fact_shadow"] = run_merchant_fact_shadow(
+            query,
+            product_id=product_id,
+            sku_id=None,
+            top_k=3,
+        )
+    except Exception as e:
+        result["merchant_fact_shadow"] = {
+            "enabled": False,
+            "error": str(e),
+        }
+
     if os.getenv("USE_CONVERSATION_MEMORY_WRITE", "0") != "1":
         result["memory_write"] = {"written": False, "reason": "feature_flag_off"}
         return result
