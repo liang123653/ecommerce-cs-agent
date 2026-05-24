@@ -72,12 +72,13 @@ def should_use_context_aware_fallback(
     history_context: Optional[Dict[str, Any]],
 ) -> bool:
     """
-    只对早退类策略启用 fallback。
+    只对早退类策略中的高风险历史启用强 fallback。
 
-    注意：
+    设计原则：
     - 不拦截 SOP_REQUIRED / FACT_REQUIRED / RISK_HANDOFF；
-    - 不强制进入 answer_with_llm；
-    - 没有历史时不启用。
+    - 没有历史时不启用；
+    - medium history 只作为上下文参考，不抢占业务主链路；
+    - 只有 risk_level=high 或历史摘要明确标记“高风险”时，才强制走保守 fallback。
     """
     if strategy not in EARLY_EXIT_STRATEGIES:
         return False
@@ -88,7 +89,14 @@ def should_use_context_aware_fallback(
     if not history_context.get("has_history"):
         return False
 
-    return True
+    risk = history_context.get("risk_level")
+    if risk == "high":
+        return True
+
+    if has_high_risk_summary_tag(history_context):
+        return True
+
+    return False
 
 
 def build_context_aware_fallback_reply(
